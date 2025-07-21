@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://b6o7q33sdodks"]
+
+[ext_resource type="Script" uid="uid://deiy7ht1o85fx" path="res://Scripts/Player/player_controller.gd" id="1_uvnfx"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_tugb3"]
+radius = 8.0
+height = 32.0
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_uvnfx")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = -16.0
+offset_top = -56.0
+offset_right = 16.0
+offset_bottom = 8.0
+color = Color(0.647059, 0.784314, 0.647059, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_tugb3")
+
+[node name="Components" type="Node" parent="."]
