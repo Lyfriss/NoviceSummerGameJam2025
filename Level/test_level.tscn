@@ -6,3 +6,5 @@
 
 [node name="Player" parent="." instance=ExtResource("1_httya")]
 position = Vector2(396, 326)
+acc = 150.0
+dec = 750.0
