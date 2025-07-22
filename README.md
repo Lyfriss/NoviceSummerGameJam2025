@@ -1,6 +1,6 @@
 # NoviceSummerGameJam2025
 
-Idea
+### Idea
 --
 
 You are a monster/assasin that stalk a target in the shadow to eliminate them 

@@ -1,24 +1,50 @@
-[gd_scene load_steps=3 format=3 uid="uid://b6o7q33sdodks"]
+[gd_scene load_steps=9 format=3 uid="uid://b6o7q33sdodks"]
 
 [ext_resource type="Script" uid="uid://deiy7ht1o85fx" path="res://Scripts/Player/player_controller.gd" id="1_uvnfx"]
+[ext_resource type="Script" uid="uid://y62nr1luswvn" path="res://Scripts/Player/PlayerComponents/player_input_component.gd" id="2_a3d8c"]
+[ext_resource type="Script" uid="uid://61i88un5qado" path="res://Scripts/Player/PlayerStates/player_state_machine.gd" id="3_xpcdj"]
+[ext_resource type="Script" uid="uid://6tc5paw8qhgq" path="res://Scripts/Player/PlayerStates/ilde_Player_state.gd" id="4_mtuoh"]
+[ext_resource type="Script" uid="uid://dpl26twvpd26c" path="res://Scripts/Player/PlayerStates/walk_state.gd" id="5_htcer"]
+[ext_resource type="Texture2D" uid="uid://b5whui6o1e5ci" path="res://Art/TexturesAtlas.png" id="6_dd0ac"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_tugb3"]
 radius = 8.0
-height = 32.0
+height = 16.0
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_dd0ac"]
+polygon = PackedVector2Array(-8, -8, 0, 0, 8, -8, 0, -16)
 
 [node name="Player" type="CharacterBody2D"]
 motion_mode = 1
 script = ExtResource("1_uvnfx")
 
-[node name="ColorRect" type="ColorRect" parent="."]
-offset_left = -16.0
-offset_top = -56.0
-offset_right = 16.0
-offset_bottom = 8.0
-color = Color(0.647059, 0.784314, 0.647059, 1)
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-rotation = 1.5708
+position = Vector2(0, -8)
 shape = SubResource("CapsuleShape2D_tugb3")
 
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource("OccluderPolygon2D_dd0ac")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -8)
+texture = ExtResource("6_dd0ac")
+region_enabled = true
+region_rect = Rect2(17, 170, 16, 16)
+
 [node name="Components" type="Node" parent="."]
+
+[node name="GetInputComponent" type="Node" parent="Components"]
+script = ExtResource("2_a3d8c")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("player_controller", "player_input", "default_state")]
+script = ExtResource("3_xpcdj")
+player_controller = NodePath("..")
+player_input = NodePath("../Components/GetInputComponent")
+default_state = NodePath("IdleState")
+
+[node name="IdleState" type="Node" parent="StateMachine"]
+script = ExtResource("4_mtuoh")
+
+[node name="WalkState" type="Node" parent="StateMachine"]
+script = ExtResource("5_htcer")
+walk_speed = 75.0
