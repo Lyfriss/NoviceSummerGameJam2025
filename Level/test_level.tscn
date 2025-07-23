@@ -1,8 +1,11 @@
-[gd_scene load_steps=11 format=4 uid="uid://d0bxivh6wfn6u"]
+[gd_scene load_steps=16 format=4 uid="uid://d0bxivh6wfn6u"]
 
 [ext_resource type="PackedScene" uid="uid://b6o7q33sdodks" path="res://Scenes/Player/player.tscn" id="1_httya"]
 [ext_resource type="Texture2D" uid="uid://b5whui6o1e5ci" path="res://Art/TexturesAtlas.png" id="2_lob7s"]
 [ext_resource type="PackedScene" uid="uid://bh35t6rubdnao" path="res://Scenes/light_source.tscn" id="3_5yf1o"]
+[ext_resource type="Script" uid="uid://biqbjpeu5wrqy" path="res://Scripts/UI/UI_manager.gd" id="4_3qvu4"]
+[ext_resource type="Script" uid="uid://cdh7f6l2xrvts" path="res://Scripts/UI/Buttons/play_again_button.gd" id="4_apcuj"]
+[ext_resource type="Script" uid="uid://gcg2eti38soy" path="res://Scripts/UI/Buttons/quit_button.gd" id="5_73g8c"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5yf1o"]
 texture = ExtResource("2_lob7s")
@@ -190,6 +193,30 @@ size = Vector2(8, 48)
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_5yf1o"]
 polygon = PackedVector2Array(-4, -26, 4, -26, 4, 22, -4, 22)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3qvu4"]
+bg_color = Color(0.882353, 0, 0, 0.588235)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1jckg"]
+bg_color = Color(0.784314, 0, 0.784314, 0.588235)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 1, 1)
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
 [node name="TestLevel" type="Node2D"]
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
@@ -226,3 +253,81 @@ shape = SubResource("RectangleShape2D_5yf1o")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="StaticBody2D"]
 occluder = SubResource("OccluderPolygon2D_5yf1o")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UI" type="Control" parent="CanvasLayer" node_paths=PackedStringArray("game_over_screen", "health_bar", "power_bar")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_3qvu4")
+game_over_screen = NodePath("GameOverScreen")
+health_bar = NodePath("UserInfo/ProgesBars/HealtBar")
+power_bar = NodePath("UserInfo/ProgesBars/PowerBar")
+
+[node name="GameOverScreen" type="PanelContainer" parent="CanvasLayer/UI"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/UI/GameOverScreen"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UI/GameOverScreen/CenterContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/UI/GameOverScreen/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "GAME OVER"
+
+[node name="PlayAgain" type="Button" parent="CanvasLayer/UI/GameOverScreen/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Play Again
+"
+script = ExtResource("4_apcuj")
+
+[node name="Quit" type="Button" parent="CanvasLayer/UI/GameOverScreen/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Quit"
+script = ExtResource("5_73g8c")
+
+[node name="UserInfo" type="MarginContainer" parent="CanvasLayer/UI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="ProgesBars" type="VBoxContainer" parent="CanvasLayer/UI/UserInfo"]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="HealtBar" type="ProgressBar" parent="CanvasLayer/UI/UserInfo/ProgesBars"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_3qvu4")
+value = 100.0
+show_percentage = false
+
+[node name="PowerBar" type="ProgressBar" parent="CanvasLayer/UI/UserInfo/ProgesBars"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_1jckg")
+value = 100.0
+show_percentage = false
+
+[connection signal="pressed" from="CanvasLayer/UI/GameOverScreen/CenterContainer/VBoxContainer/PlayAgain" to="CanvasLayer/UI/GameOverScreen/CenterContainer/VBoxContainer/PlayAgain" method="_on_pressed"]
+[connection signal="pressed" from="CanvasLayer/UI/GameOverScreen/CenterContainer/VBoxContainer/Quit" to="CanvasLayer/UI/GameOverScreen/CenterContainer/VBoxContainer/Quit" method="_on_pressed"]

@@ -13,6 +13,8 @@ func update(_delta: float) -> void:
 	
 	if player_controller.velocity.is_zero_approx() and player_input.get_movement_vector_normalized() == Vector2.ZERO:
 		move_to_state.emit("IdleState")
+	if Input.is_action_just_pressed("dash"):
+		move_to_state.emit("DashState")
 
 func physics_update(delta: float) -> void:
 	player_controller.move_player(walk_speed, acceleration, deceleration, delta)

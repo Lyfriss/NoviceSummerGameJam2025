@@ -24,11 +24,11 @@ func _process(_delta: float) -> void:
 		ray_cast.look_at(player.global_position + Vector2(0, -8))
 		no_obstacle = ray_cast.get_collider() is PlayerController
 	
-	var is_visible : bool = in_range and no_obstacle
-	if is_visible and not was_visible:
+	var is_now_visible : bool = in_range and no_obstacle
+	if is_now_visible and not was_visible:
 		player.illuminated_count += 1
-	elif not is_visible and was_visible :
+	elif not is_now_visible and was_visible :
 		player.illuminated_count -= 1  
 		
-	was_visible = is_visible
+	was_visible = is_now_visible
 	

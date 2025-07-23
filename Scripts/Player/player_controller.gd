@@ -5,20 +5,18 @@ class_name PlayerController extends CharacterBody2D
 @export var debug: bool = false
 @export var illuminated_count : int
 
+var dead : bool = false
 var direction: Vector2
 
 func _init() -> void:
 	Globals.player = self
 
 func  _process(_delta: float) -> void:
-	print(illuminated_count)
 	if illuminated_count > 0: 
-
 		sprite_2d.self_modulate = Color.RED
 	if illuminated_count == 0: 
 		sprite_2d.self_modulate = Color.WHITE
-	
-	print(illuminated_count)
+
 func set_movement_input(input_vector : Vector2) -> void: 
 		direction = input_vector
 		
@@ -32,5 +30,5 @@ func move_player(speed: float, acc: float, dec: float, delta:float) -> void:
 		
 	move_and_slide()
 
-func set_illumination_amount(amount: int) -> void:
-	illuminated_count = max(0, illuminated_count)
+func is_illuminated() -> bool: 
+	return illuminated_count > 0

@@ -31,7 +31,9 @@ func setup_state(state : PlayerState) -> void:
 	state.move_to_state.connect(move_to_state)
 
 func _physics_process(delta: float) -> void:
-	current_state.physics_update(delta)
+	if not Globals.player.dead: 
+		current_state.physics_update(delta)
 
 func _process(delta: float) -> void:
-	current_state.update(delta)
+	if not Globals.player.dead: 
+		current_state.update(delta)
