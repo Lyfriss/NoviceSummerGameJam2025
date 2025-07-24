@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://b6o7q33sdodks"]
+[gd_scene load_steps=21 format=3 uid="uid://b6o7q33sdodks"]
 
 [ext_resource type="Script" uid="uid://deiy7ht1o85fx" path="res://Scripts/Player/player_controller.gd" id="1_uvnfx"]
 [ext_resource type="Script" uid="uid://y62nr1luswvn" path="res://Scripts/Player/PlayerComponents/player_input_component.gd" id="2_a3d8c"]
@@ -9,39 +9,76 @@
 [ext_resource type="Texture2D" uid="uid://b5whui6o1e5ci" path="res://Art/TexturesAtlas.png" id="6_dd0ac"]
 [ext_resource type="Script" uid="uid://blxmwtvxiippc" path="res://Scripts/Player/PlayerStates/dash_state.gd" id="8_jlvik"]
 
-[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_dd0ac"]
-polygon = PackedVector2Array(-8, -8, 0, 0, 8, -8, 0, -16)
-
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_tugb3"]
 radius = 4.0
 height = 16.0
 
-[node name="Player" type="CharacterBody2D"]
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_jlvik"]
+light_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_jlvik"]
+colors = PackedColorArray(1, 0, 0, 1, 0.632225, 1.9493e-06, 3.36915e-07, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_gk6dx"]
+gradient = SubResource("Gradient_jlvik")
+
+[sub_resource type="Curve" id="Curve_jhyir"]
+_data = [Vector2(0, 0.752809), 0.0, 0.0, 0, 0, Vector2(0.493392, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.146068), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_74mp2"]
+curve = SubResource("Curve_jhyir")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_oikmp"]
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_max = 25.0
+gravity = Vector3(0, 0, 0)
+scale_min = 8.0
+scale_max = 12.0
+scale_curve = SubResource("CurveTexture_74mp2")
+color_ramp = SubResource("GradientTexture1D_gk6dx")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jlvik"]
+atlas = ExtResource("6_dd0ac")
+region = Rect2(17, 170, 16, 17)
+
+[sub_resource type="Curve" id="Curve_gk6dx"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0728732, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_jhyir"]
+curve = SubResource("Curve_gk6dx")
+
+[sub_resource type="CurveTexture" id="CurveTexture_oikmp"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_06tpx"]
+particle_flag_disable_z = true
+gravity = Vector3(0, 0, 0)
+color = Color(1, 0, 1, 1)
+alpha_curve = SubResource("CurveTexture_jhyir")
+hue_variation_curve = SubResource("CurveTexture_oikmp")
+
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("health_component", "dash_state")]
+collision_layer = 8
 motion_mode = 1
 script = ExtResource("1_uvnfx")
-
-[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
-occluder = SubResource("OccluderPolygon2D_dd0ac")
+health_component = NodePath("Components/HealthComponent")
+dash_state = NodePath("StateMachine/DashState")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -4)
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_tugb3")
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -8)
-texture = ExtResource("6_dd0ac")
-region_enabled = true
-region_rect = Rect2(17, 170, 16, 16)
 
 [node name="Components" type="Node" parent="."]
 
 [node name="GetInputComponent" type="Node" parent="Components"]
 script = ExtResource("2_a3d8c")
 
-[node name="HealthComponent" type="Node" parent="Components" node_paths=PackedStringArray("player")]
+[node name="HealthComponent" type="Node" parent="Components" node_paths=PackedStringArray("player", "burning_particle")]
 script = ExtResource("4_0u5uq")
 player = NodePath("../..")
+burning_particle = NodePath("../../Visual/BurningPartiple")
 dps = 20.0
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("player_controller", "player_input", "default_state")]
@@ -57,12 +94,36 @@ script = ExtResource("4_mtuoh")
 script = ExtResource("5_htcer")
 walk_speed = 75.0
 
-[node name="DashState" type="Node" parent="StateMachine"]
+[node name="DashState" type="Node" parent="StateMachine" node_paths=PackedStringArray("dash_particles")]
 script = ExtResource("8_jlvik")
+dash_particles = NodePath("../../Visual/DashEffect")
 metadata/_custom_type_script = "uid://cssjm1ui566jm"
 
 [node name="Timer" type="Timer" parent="StateMachine/DashState"]
 wait_time = 0.5
 one_shot = true
+
+[node name="Visual" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Visual"]
+z_index = 2
+material = SubResource("CanvasItemMaterial_jlvik")
+position = Vector2(0, -8)
+texture = ExtResource("6_dd0ac")
+region_enabled = true
+region_rect = Rect2(17, 170, 16, 16)
+
+[node name="BurningPartiple" type="GPUParticles2D" parent="Visual"]
+position = Vector2(0, -8)
+emitting = false
+amount = 32
+process_material = SubResource("ParticleProcessMaterial_oikmp")
+
+[node name="DashEffect" type="GPUParticles2D" parent="Visual"]
+position = Vector2(0, -8)
+emitting = false
+amount = 16
+texture = SubResource("AtlasTexture_jlvik")
+process_material = SubResource("ParticleProcessMaterial_06tpx")
 
 [connection signal="timeout" from="StateMachine/DashState/Timer" to="StateMachine/DashState" method="_on_timer_timeout"]

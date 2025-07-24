@@ -1,12 +1,15 @@
 class_name UIManager extends Control
 
 @export_category("Screens")
-@export var game_over_screen : PanelContainer
+@export var game_over_screen : MarginContainer
 @export var health_bar : ProgressBar
 @export var power_bar : ProgressBar
 
 func _init() -> void:
 	Globals.ui = self
+	if not visible: 
+		visible = true
+		
 
 func _ready() -> void:
 	game_over_screen.visible = false

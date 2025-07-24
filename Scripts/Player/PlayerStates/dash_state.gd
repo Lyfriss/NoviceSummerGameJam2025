@@ -1,5 +1,8 @@
 class_name DashPlayerState extends PlayerState
 
+@export_category("References")
+@export var dash_particles : GPUParticles2D
+
 @export_category("Dash settings")
 @export_range(0.0, 100, 10.0) var max_power : float = 100
 @export_range(0.0, 25, 5.0) var power_cost : float = 20.0
@@ -14,10 +17,11 @@ class_name DashPlayerState extends PlayerState
 
 
 func enter_state(_last_state: String) -> void:
-	if current_power <= 0: 
+	if current_power == 0: 
 		move_to_state.emit("WalkState")
+		return
+	dash_particles.emitting = true
 	timer.start()
-	player_controller.modulate = Color.WEB_PURPLE
 	
 func physics_update(delta: float) -> void:
 	player_controller.move_player(dash_speed, acceleration, deceleration, delta)
@@ -35,5 +39,5 @@ func set_current_power(value):
 	Globals.ui.update_power_bar(max_power, current_power)
 
 func _on_timer_timeout() -> void:
-	player_controller.modulate = Color.WHITE
+	dash_particles.emitting = false
 	move_to_state.emit("WalkState")

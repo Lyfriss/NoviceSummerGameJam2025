@@ -1,9 +1,13 @@
 class_name PlayerController extends CharacterBody2D
-@onready var sprite_2d: Sprite2D = $Sprite2D
 
 @export_category("Debug")
 @export var debug: bool = false
 @export var illuminated_count : int
+
+@export_category("Stats")
+@export var health_component : PlayerHealthComponent
+@export var dash_state : DashPlayerState
+
 
 var dead : bool = false
 var direction: Vector2
@@ -11,11 +15,6 @@ var direction: Vector2
 func _init() -> void:
 	Globals.player = self
 
-func  _process(_delta: float) -> void:
-	if illuminated_count > 0: 
-		sprite_2d.self_modulate = Color.RED
-	if illuminated_count == 0: 
-		sprite_2d.self_modulate = Color.WHITE
 
 func set_movement_input(input_vector : Vector2) -> void: 
 		direction = input_vector
