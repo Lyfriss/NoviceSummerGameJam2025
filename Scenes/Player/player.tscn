@@ -1,9 +1,10 @@
-[gd_scene load_steps=23 format=3 uid="uid://b6o7q33sdodks"]
+[gd_scene load_steps=24 format=3 uid="uid://b6o7q33sdodks"]
 
 [ext_resource type="Script" uid="uid://deiy7ht1o85fx" path="res://Scripts/Player/player_controller.gd" id="1_uvnfx"]
 [ext_resource type="Script" uid="uid://y62nr1luswvn" path="res://Scripts/Player/PlayerComponents/player_input_component.gd" id="2_a3d8c"]
 [ext_resource type="Script" uid="uid://61i88un5qado" path="res://Scripts/Player/PlayerStates/player_state_machine.gd" id="3_xpcdj"]
 [ext_resource type="Script" uid="uid://cdv4uvjg3k4av" path="res://Scripts/Player/PlayerComponents/player_health_component.gd" id="4_0u5uq"]
+[ext_resource type="Script" uid="uid://mg2ypix8o4uq" path="res://Scripts/Player/PlayerComponents/light_detector.gd" id="4_gk6dx"]
 [ext_resource type="Script" uid="uid://6tc5paw8qhgq" path="res://Scripts/Player/PlayerStates/ilde_Player_state.gd" id="4_mtuoh"]
 [ext_resource type="Script" uid="uid://dpl26twvpd26c" path="res://Scripts/Player/PlayerStates/walk_state.gd" id="5_htcer"]
 [ext_resource type="Texture2D" uid="uid://b5whui6o1e5ci" path="res://Art/TexturesAtlas.png" id="6_dd0ac"]
@@ -11,6 +12,10 @@
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_tugb3"]
 radius = 4.0
+height = 16.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jlvik"]
+radius = 8.0
 height = 16.0
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_jlvik"]
@@ -65,10 +70,6 @@ color = Color(1, 0, 1, 1)
 alpha_curve = SubResource("CurveTexture_jhyir")
 hue_variation_curve = SubResource("CurveTexture_oikmp")
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jlvik"]
-radius = 8.0
-height = 16.0
-
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("health_component", "dash_state")]
 collision_layer = 8
 motion_mode = 1
@@ -80,7 +81,7 @@ dash_state = NodePath("StateMachine/DashState")
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_tugb3")
 
-[node name="Components" type="Node" parent="."]
+[node name="Components" type="Node2D" parent="."]
 
 [node name="GetInputComponent" type="Node" parent="Components"]
 script = ExtResource("2_a3d8c")
@@ -90,6 +91,16 @@ script = ExtResource("4_0u5uq")
 player = NodePath("../..")
 burning_particle = NodePath("../../Visual/BurningPartiple")
 dps = 20.0
+
+[node name="LightDetector" type="Area2D" parent="Components"]
+collision_layer = 12
+collision_mask = 0
+script = ExtResource("4_gk6dx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Components/LightDetector"]
+position = Vector2(0, -8)
+shape = SubResource("CapsuleShape2D_jlvik")
+debug_color = Color(1, 1, 1, 0.42)
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("player_controller", "player_input", "default_state")]
 script = ExtResource("3_xpcdj")
@@ -135,14 +146,5 @@ emitting = false
 amount = 16
 texture = SubResource("AtlasTexture_jlvik")
 process_material = SubResource("ParticleProcessMaterial_06tpx")
-
-[node name="LightDetector" type="Area2D" parent="Visual"]
-collision_layer = 12
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Visual/LightDetector"]
-position = Vector2(0, -8)
-shape = SubResource("CapsuleShape2D_jlvik")
-debug_color = Color(1, 1, 1, 0.42)
 
 [connection signal="timeout" from="StateMachine/DashState/Timer" to="StateMachine/DashState" method="_on_timer_timeout"]

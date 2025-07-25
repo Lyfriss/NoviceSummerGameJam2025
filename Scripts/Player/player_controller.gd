@@ -7,6 +7,8 @@ class_name PlayerController extends CharacterBody2D
 @export_category("Stats")
 @export var health_component : PlayerHealthComponent
 @export var dash_state : DashPlayerState
+@export_range(0.0, 100, 0.5) var starting_power : float = 50
+
 
 
 var dead : bool = false
@@ -15,6 +17,8 @@ var direction: Vector2
 func _init() -> void:
 	Globals.player = self
 
+func _ready() -> void:
+	dash_state.set_current_power(starting_power)
 
 func set_movement_input(input_vector : Vector2) -> void: 
 		direction = input_vector

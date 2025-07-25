@@ -18,9 +18,8 @@ light_mode = 1
 atlas = ExtResource("1_56dcq")
 region = Rect2(0, 136, 16, 16)
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_y18gj"]
-radius = 8.0
-height = 32.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_dxgcx"]
+radius = 16.0
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_vm30s"]
 light_mode = 1
@@ -158,7 +157,7 @@ script = ExtResource("2_y18gj")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Components/Hitbox"]
 position = Vector2(0, -8)
 rotation = -1.5708
-shape = SubResource("CapsuleShape2D_y18gj")
+shape = SubResource("CircleShape2D_dxgcx")
 debug_color = Color(0.493378, 0.563299, 0.431724, 0.42)
 
 [node name="InputPrompt" type="Sprite2D" parent="Components/Hitbox"]
@@ -185,7 +184,7 @@ collision_mask = 8
 
 [node name="RayCast2D" type="RayCast2D" parent="Components/SightComponent"]
 rotation = -1.5708
-target_position = Vector2(-64.0005, 128)
+target_position = Vector2(-56.0005, 128)
 collision_mask = 8
 
 [node name="RayCast2D2" type="RayCast2D" parent="Components/SightComponent"]

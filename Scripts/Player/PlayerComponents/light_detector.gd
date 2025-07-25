@@ -1,0 +1,1 @@
+class_name PlayerLightDetectorComponent extends Area2D

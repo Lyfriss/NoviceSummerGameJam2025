@@ -9,7 +9,9 @@ enum states {IDLE, PATROL, CHASE}
 var current_state : states
 
 @export_category("Idle State Parameters")
+@export var guarding_looking_direction : Vector2 = Vector2.DOWN
 var inizial_position : Vector2
+
 
 @export_category("Patrol State Parameters")
 @export var patrol_points : Array[Marker2D]
@@ -18,12 +20,14 @@ var current_patrol_point : int = 0
 
 @export_category("Chase State Parameters")
 @export var chase_speed : float = 100
-@export var guard_damege : float = 10
+@export var guard_damege : float = 100
 
 
 func _ready() -> void:
 	current_state = default_state
 	inizial_position = global_position
+	sight_component.look_at(guarding_looking_direction+ sight_component.global_position)
+	print(guarding_looking_direction)
 
 func _physics_process(delta: float) -> void:
 	
@@ -35,7 +39,9 @@ func _physics_process(delta: float) -> void:
 func idle_behavior(_delta: float) -> void:
 	if global_position.distance_to(inizial_position) > 1: 
 			move_to_target(inizial_position, patrol_speed)
-
+	else:
+		sight_component.look_at(guarding_looking_direction+ sight_component.global_position)
+		
 func patrol_behavior(_delta: float) -> void: 
 	if global_position.distance_to(patrol_points[current_patrol_point].global_position) > 1 : 
 		move_to_target(patrol_points[current_patrol_point].global_position, patrol_speed)
@@ -46,7 +52,7 @@ func patrol_behavior(_delta: float) -> void:
 func chase_behavior(delta: float) -> void: 
 	move_to_target(Globals.player.global_position, chase_speed)
 	if (global_position.distance_to(Globals.player.global_position) < 1): 
-		
+		print("Caught you")
 		Globals.player.health_component.take_damege(guard_damege * delta)
 	
 func move_to_target(target: Vector2 , speed: float) -> void: 

@@ -12,8 +12,7 @@ func _on_body_entered(body: Node2D) -> void:
 
 func _process(_delta: float) -> void:
 		if not Globals.player.is_illuminated() and Input.is_action_just_pressed("interact") and in_range:
-			print("kill")
-			Globals.player.dash_state.current_power += 10
+			Globals.player.dash_state.current_power += 20
 			get_parent().get_parent().queue_free()
 	
 func _on_body_exited(body: Node2D) -> void:
