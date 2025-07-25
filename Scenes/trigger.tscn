@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://bvqckm4rea3kc"]
+
+[ext_resource type="Script" uid="uid://cat2qlwyctu4s" path="res://Scripts/trigger.gd" id="1_vcq5i"]
+
+[node name="Trigger" type="Area2D"]
+collision_layer = 0
+collision_mask = 8
+script = ExtResource("1_vcq5i")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

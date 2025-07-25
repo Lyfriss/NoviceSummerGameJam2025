@@ -1,14 +1,18 @@
-[gd_scene load_steps=12 format=3 uid="uid://cqek1uxycpqd2"]
+[gd_scene load_steps=15 format=3 uid="uid://cqek1uxycpqd2"]
 
 [ext_resource type="Texture2D" uid="uid://b5whui6o1e5ci" path="res://Art/TexturesAtlas.png" id="1_56dcq"]
 [ext_resource type="Script" uid="uid://vr8pxwojtgqt" path="res://Scripts/Guard/guard.gd" id="1_ctrrx"]
 [ext_resource type="Script" uid="uid://e7eh02tih4if" path="res://Scripts/hitbox.gd" id="2_y18gj"]
 [ext_resource type="Texture2D" uid="uid://dol6ki0qs360x" path="res://Art/UI/InputPrompts/keyboard_e.png" id="3_2t02l"]
+[ext_resource type="Texture2D" uid="uid://ccdhg3mftoxhx" path="res://Art/lightcone.png" id="6_dxgcx"]
 [ext_resource type="Script" uid="uid://j38qilvwvtye" path="res://Scripts/Guard/sight.gd" id="7_vm30s"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_56dcq"]
 radius = 4.0
 height = 16.0
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_dxgcx"]
+light_mode = 1
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_y18gj"]
 atlas = ExtResource("1_56dcq")
@@ -17,6 +21,9 @@ region = Rect2(0, 136, 16, 16)
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_y18gj"]
 radius = 8.0
 height = 32.0
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_vm30s"]
+light_mode = 1
 
 [sub_resource type="Animation" id="Animation_2t02l"]
 resource_name = "Prompt"
@@ -137,6 +144,7 @@ rotation = 1.5708
 shape = SubResource("CapsuleShape2D_56dcq")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("CanvasItemMaterial_dxgcx")
 position = Vector2(0, -8)
 texture = SubResource("AtlasTexture_y18gj")
 
@@ -155,6 +163,7 @@ debug_color = Color(0.493378, 0.563299, 0.431724, 0.42)
 
 [node name="InputPrompt" type="Sprite2D" parent="Components/Hitbox"]
 modulate = Color(1, 1, 1, 0)
+material = SubResource("CanvasItemMaterial_vm30s")
 position = Vector2(0, -25)
 scale = Vector2(0.15, 0.15)
 texture = ExtResource("3_2t02l")
@@ -171,18 +180,26 @@ script = ExtResource("7_vm30s")
 
 [node name="Front" type="RayCast2D" parent="Components/SightComponent"]
 rotation = -1.5708
-target_position = Vector2(0, 72)
+target_position = Vector2(-0.000463486, 128)
 collision_mask = 8
 
 [node name="RayCast2D" type="RayCast2D" parent="Components/SightComponent"]
 rotation = -1.5708
-target_position = Vector2(-24, 64)
+target_position = Vector2(-64.0005, 128)
 collision_mask = 8
 
 [node name="RayCast2D2" type="RayCast2D" parent="Components/SightComponent"]
 rotation = -1.5708
-target_position = Vector2(24, 64)
+target_position = Vector2(55.9995, 128)
 collision_mask = 8
+
+[node name="PointLight2D" type="PointLight2D" parent="Components/SightComponent"]
+position = Vector2(0, -2.38419e-07)
+scale = Vector2(1, 0.875)
+shadow_enabled = true
+texture = ExtResource("6_dxgcx")
+offset = Vector2(64, 0)
+texture_scale = 0.25
 
 [connection signal="body_entered" from="Components/Hitbox" to="Components/Hitbox" method="_on_body_entered"]
 [connection signal="body_exited" from="Components/Hitbox" to="Components/Hitbox" method="_on_body_exited"]

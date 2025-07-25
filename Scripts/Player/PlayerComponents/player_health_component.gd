@@ -34,6 +34,5 @@ func set_current_health(value):
 	Globals.ui.update_health_bar(max_health, current_health)
 
 func take_damege(damege : float):
-	print("Damege that i should take: " + str(damege))
 	current_health -= damege
 	burning_particle.emitting = true

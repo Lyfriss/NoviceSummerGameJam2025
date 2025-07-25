@@ -22,7 +22,7 @@ func _on_body_exited(body: Node2D) -> void:
 func _process(_delta: float) -> void:
 	if in_range: 
 		ray_cast.look_at(player.global_position + Vector2(0, -8))
-		no_obstacle = ray_cast.get_collider() is PlayerController
+		no_obstacle = ray_cast.is_colliding()
 	
 	var is_now_visible : bool = in_range and no_obstacle
 	if is_now_visible and not was_visible:

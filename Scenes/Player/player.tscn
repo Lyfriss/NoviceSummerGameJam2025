@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://b6o7q33sdodks"]
+[gd_scene load_steps=23 format=3 uid="uid://b6o7q33sdodks"]
 
 [ext_resource type="Script" uid="uid://deiy7ht1o85fx" path="res://Scripts/Player/player_controller.gd" id="1_uvnfx"]
 [ext_resource type="Script" uid="uid://y62nr1luswvn" path="res://Scripts/Player/PlayerComponents/player_input_component.gd" id="2_a3d8c"]
@@ -50,7 +50,13 @@ point_count = 2
 [sub_resource type="CurveTexture" id="CurveTexture_jhyir"]
 curve = SubResource("Curve_gk6dx")
 
+[sub_resource type="Curve" id="Curve_jlvik"]
+_limits = [-1.0, 1.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
 [sub_resource type="CurveTexture" id="CurveTexture_oikmp"]
+curve = SubResource("Curve_jlvik")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_06tpx"]
 particle_flag_disable_z = true
@@ -58,6 +64,10 @@ gravity = Vector3(0, 0, 0)
 color = Color(1, 0, 1, 1)
 alpha_curve = SubResource("CurveTexture_jhyir")
 hue_variation_curve = SubResource("CurveTexture_oikmp")
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jlvik"]
+radius = 8.0
+height = 16.0
 
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("health_component", "dash_state")]
 collision_layer = 8
@@ -125,5 +135,14 @@ emitting = false
 amount = 16
 texture = SubResource("AtlasTexture_jlvik")
 process_material = SubResource("ParticleProcessMaterial_06tpx")
+
+[node name="LightDetector" type="Area2D" parent="Visual"]
+collision_layer = 12
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Visual/LightDetector"]
+position = Vector2(0, -8)
+shape = SubResource("CapsuleShape2D_jlvik")
+debug_color = Color(1, 1, 1, 0.42)
 
 [connection signal="timeout" from="StateMachine/DashState/Timer" to="StateMachine/DashState" method="_on_timer_timeout"]
