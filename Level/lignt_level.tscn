@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://dyi3al4rkeotf"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_akbqc"]
+font_size = 191
+
+[node name="LigntLevel" type="Node2D"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "LEVEL LIGHT"
+label_settings = SubResource("LabelSettings_akbqc")
