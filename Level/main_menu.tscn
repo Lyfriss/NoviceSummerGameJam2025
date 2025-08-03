@@ -18,6 +18,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="UI"]
 layout_mode = 1
@@ -51,43 +52,6 @@ label_settings = SubResource("LabelSettings_28flt")
 [node name="HSeparator" type="HSeparator" parent="UI/MarginContainer/PanelContainer/CenterContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Buttons" type="MarginContainer" parent="UI"]
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -440.0
-offset_right = 312.0
-grow_vertical = 0
-size_flags_horizontal = 0
-size_flags_vertical = 8
-theme = ExtResource("1_28flt")
-theme_override_constants/margin_left = 32
-theme_override_constants/margin_bottom = 32
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="UI/Buttons"]
-layout_mode = 2
-alignment = 2
-
-[node name="PlayButton" type="Button" parent="UI/Buttons/VBoxContainer2"]
-layout_mode = 2
-theme = ExtResource("1_28flt")
-text = "Play"
-script = ExtResource("2_1ehe0")
-
-[node name="LevelsButton" type="Button" parent="UI/Buttons/VBoxContainer2"]
-layout_mode = 2
-text = "Levels"
-
-[node name="CreditsButton" type="Button" parent="UI/Buttons/VBoxContainer2"]
-layout_mode = 2
-text = "Credits"
-
-[node name="QuitButton" type="Button" parent="UI/Buttons/VBoxContainer2"]
-layout_mode = 2
-text = "Quit"
-script = ExtResource("3_ce3w2")
-
 [node name="Level List" type="Control" parent="UI"]
 visible = false
 layout_mode = 1
@@ -96,6 +60,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 
 [node name="Panel" type="Panel" parent="UI/Level List"]
 layout_mode = 1
@@ -161,5 +126,77 @@ text = "Dash"
 layout_mode = 2
 text = "Final"
 
-[connection signal="pressed" from="UI/Buttons/VBoxContainer2/PlayButton" to="UI/Buttons/VBoxContainer2/PlayButton" method="_on_pressed"]
-[connection signal="pressed" from="UI/Buttons/VBoxContainer2/QuitButton" to="UI/Buttons/VBoxContainer2/QuitButton" method="_on_pressed"]
+[node name="Credits" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("1_28flt")
+
+[node name="MarginContainer" type="MarginContainer" parent="Credits"]
+layout_mode = 0
+offset_left = 576.0
+offset_top = 192.0
+offset_right = 1109.0
+offset_bottom = 544.0
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="PanelContainer" type="PanelContainer" parent="Credits/MarginContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Credits/MarginContainer/PanelContainer"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[b]Assets used: [/b]
+[u]Fantasy UI Borders[/u] by [color=green]Kenney[/color]
+[u]Tiny Dungeon[/u] by [color=green]Kenney[/color]
+
+"
+fit_content = true
+autowrap_mode = 0
+
+[node name="Buttons" type="MarginContainer" parent="."]
+offset_top = 344.0
+offset_right = 384.0
+offset_bottom = 632.0
+size_flags_horizontal = 0
+size_flags_vertical = 8
+mouse_filter = 0
+theme = ExtResource("1_28flt")
+theme_override_constants/margin_left = 64
+theme_override_constants/margin_bottom = 32
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Buttons"]
+layout_mode = 2
+size_flags_vertical = 4
+alignment = 2
+
+[node name="PlayButton" type="Button" parent="Buttons/VBoxContainer2"]
+layout_mode = 2
+theme = ExtResource("1_28flt")
+text = "Play"
+script = ExtResource("2_1ehe0")
+
+[node name="LevelsButton" type="Button" parent="Buttons/VBoxContainer2"]
+visible = false
+layout_mode = 2
+text = "Levels"
+
+[node name="CreditsButton" type="Button" parent="Buttons/VBoxContainer2"]
+visible = false
+layout_mode = 2
+text = "Credits"
+
+[node name="QuitButton" type="Button" parent="Buttons/VBoxContainer2"]
+layout_mode = 2
+text = "Quit"
+script = ExtResource("3_ce3w2")
+
+[connection signal="pressed" from="Buttons/VBoxContainer2/PlayButton" to="Buttons/VBoxContainer2/PlayButton" method="_on_pressed"]
+[connection signal="pressed" from="Buttons/VBoxContainer2/QuitButton" to="Buttons/VBoxContainer2/QuitButton" method="_on_pressed"]

@@ -90,7 +90,7 @@ script = ExtResource("2_a3d8c")
 script = ExtResource("4_0u5uq")
 player = NodePath("../..")
 burning_particle = NodePath("../../Visual/BurningPartiple")
-dps = 20.0
+dps = 40.0
 
 [node name="LightDetector" type="Area2D" parent="Components"]
 collision_layer = 12

@@ -11,7 +11,8 @@ config_version=5
 [application]
 
 config/name="LurkingInShadow"
-run/main_scene="uid://d0bxivh6wfn6u"
+config/tags=PackedStringArray("game_jam")
+run/main_scene="uid://uh5p3ls33sc2"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 

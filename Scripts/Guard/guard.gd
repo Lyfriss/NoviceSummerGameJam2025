@@ -50,10 +50,8 @@ func patrol_behavior(_delta: float) -> void:
 		velocity = Vector2.ZERO
 	
 func chase_behavior(delta: float) -> void: 
-	move_to_target(Globals.player.global_position, chase_speed)
-	if (global_position.distance_to(Globals.player.global_position) < 1): 
-		print("Caught you")
-		Globals.player.health_component.take_damege(guard_damege * delta)
+	if (global_position.distance_to(Globals.player.global_position) > 16): 
+		move_to_target(Globals.player.global_position, chase_speed)
 	
 func move_to_target(target: Vector2 , speed: float) -> void: 
 	var direction = (target - global_position).normalized()

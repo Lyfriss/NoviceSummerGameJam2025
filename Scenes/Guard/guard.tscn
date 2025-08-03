@@ -1,10 +1,11 @@
-[gd_scene load_steps=15 format=3 uid="uid://cqek1uxycpqd2"]
+[gd_scene load_steps=23 format=3 uid="uid://cqek1uxycpqd2"]
 
 [ext_resource type="Texture2D" uid="uid://b5whui6o1e5ci" path="res://Art/TexturesAtlas.png" id="1_56dcq"]
 [ext_resource type="Script" uid="uid://vr8pxwojtgqt" path="res://Scripts/Guard/guard.gd" id="1_ctrrx"]
 [ext_resource type="Script" uid="uid://e7eh02tih4if" path="res://Scripts/hitbox.gd" id="2_y18gj"]
 [ext_resource type="Texture2D" uid="uid://dol6ki0qs360x" path="res://Art/UI/InputPrompts/keyboard_e.png" id="3_2t02l"]
 [ext_resource type="Texture2D" uid="uid://ccdhg3mftoxhx" path="res://Art/lightcone.png" id="6_dxgcx"]
+[ext_resource type="PackedScene" uid="uid://bh35t6rubdnao" path="res://Scenes/light_source.tscn" id="7_ctrrx"]
 [ext_resource type="Script" uid="uid://j38qilvwvtye" path="res://Scripts/Guard/sight.gd" id="7_vm30s"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_56dcq"]
@@ -133,6 +134,36 @@ _data = {
 &"RESET": SubResource("Animation_rojh0")
 }
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ctrrx"]
+light_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_dxgcx"]
+colors = PackedColorArray(1, 0, 0, 1, 0.632225, 1.9493e-06, 3.36915e-07, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_gk6dx"]
+gradient = SubResource("Gradient_dxgcx")
+
+[sub_resource type="Curve" id="Curve_vm30s"]
+_data = [Vector2(0, 0.752809), 0.0, 0.0, 0, 0, Vector2(0.493392, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.146068), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_74mp2"]
+curve = SubResource("Curve_vm30s")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ctrrx"]
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_min = 45.0
+initial_velocity_max = 90.0
+gravity = Vector3(0, 0, 0)
+scale_min = 8.0
+scale_max = 12.0
+scale_curve = SubResource("CurveTexture_74mp2")
+color_ramp = SubResource("GradientTexture1D_gk6dx")
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_vm30s"]
+points = PackedVector2Array(0, 0, 128, -56, 128, 56)
+
 [node name="Guard" type="CharacterBody2D"]
 collision_layer = 16
 motion_mode = 1
@@ -172,6 +203,15 @@ libraries = {
 &"": SubResource("AnimationLibrary_rojh0")
 }
 
+[node name="DeathPartiple" type="GPUParticles2D" parent="Components/Hitbox"]
+material = SubResource("CanvasItemMaterial_ctrrx")
+position = Vector2(0, -8)
+emitting = false
+amount = 32
+lifetime = 0.25
+one_shot = true
+process_material = SubResource("ParticleProcessMaterial_ctrrx")
+
 [node name="SightComponent" type="Node2D" parent="Components"]
 unique_name_in_owner = true
 position = Vector2(0, -8)
@@ -199,6 +239,11 @@ shadow_enabled = true
 texture = ExtResource("6_dxgcx")
 offset = Vector2(64, 0)
 texture_scale = 0.25
+
+[node name="LightSource" parent="Components/SightComponent" instance=ExtResource("7_ctrrx")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Components/SightComponent/LightSource"]
+shape = SubResource("ConvexPolygonShape2D_vm30s")
 
 [connection signal="body_entered" from="Components/Hitbox" to="Components/Hitbox" method="_on_body_entered"]
 [connection signal="body_exited" from="Components/Hitbox" to="Components/Hitbox" method="_on_body_exited"]
